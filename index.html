@@ -1,0 +1,236 @@
+<title>AuroraFFA</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: one centered column. Sky of drifting aurora ribbons behind the header, three rank cards in a row that stacks on phones, Discord call to action at the bottom. */
+:root {
+  --night: #06121a;
+  --card: #0b1e28;
+  --line: #1d3a46;
+  --ink: #e9f7f3;
+  --muted: #8db0aa;
+  --green: #5ef2b0;
+  --teal: #2fd3d9;
+  --violet: #9b7bff;
+  --discord: #5865f2;
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--night);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-block: 0 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-x: hidden;
+}
+.sky {
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 560px;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(180deg, #0a2230 0%, var(--night) 100%);
+}
+.ribbon {
+  position: absolute;
+  left: -20%;
+  width: 140%;
+  height: 220px;
+  filter: blur(46px);
+  opacity: 0.55;
+  border-radius: 50%;
+  animation: drift 16s ease-in-out infinite alternate;
+}
+.ribbon.a { top: 40px; background: linear-gradient(90deg, transparent, var(--green), var(--teal), transparent); }
+.ribbon.b { top: 120px; background: linear-gradient(90deg, transparent, var(--violet), var(--teal), transparent); opacity: 0.4; animation-duration: 22s; animation-direction: alternate-reverse; }
+@keyframes drift {
+  from { transform: translateX(-6%) skewY(-3deg); }
+  to { transform: translateX(6%) skewY(3deg); }
+}
+@media (prefers-reduced-motion: reduce) { .ribbon { animation: none; } }
+
+.wrap { position: relative; z-index: 1; max-width: 1040px; margin: 0 auto; }
+
+header { display: flex; align-items: center; gap: 14px; padding-top: 28px; }
+.pfp { width: 56px; height: 56px; flex: none; display: block; }
+.brand { font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; letter-spacing: -0.01em; }
+.brand span { color: var(--green); }
+
+.hero { padding: 56px 0 40px; max-width: 640px; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin: 0 0 14px; }
+h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 9vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: 0 0 16px;
+  text-wrap: balance;
+}
+h1 em {
+  font-style: normal;
+  background: linear-gradient(90deg, var(--green), var(--teal) 55%, var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.lede { color: var(--muted); margin: 0; font-size: 1.05rem; max-width: 46ch; }
+
+.tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; align-items: stretch; }
+.tier {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 24px 22px 26px;
+}
+.tier h2 { font-family: var(--font-display); font-weight: 800; font-size: 1.7rem; margin: 0; letter-spacing: -0.01em; }
+.price { font-family: var(--font-mono); font-weight: 700; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.tier.top {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(135deg, var(--green), var(--teal) 50%, var(--violet)) border-box;
+  border: 1.5px solid transparent;
+  box-shadow: 0 18px 60px -24px rgba(94, 242, 176, 0.45);
+}
+.tier.top .price { font-size: 2.4rem; letter-spacing: -0.02em; text-transform: none; color: var(--green); line-height: 1; }
+.tier.plus h2 { color: var(--teal); }
+
+ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+li { display: flex; gap: 12px; align-items: baseline; font-weight: 500; }
+li::before {
+  content: "";
+  flex: none;
+  width: 7px; height: 7px;
+  background: var(--teal);
+  transform: translateY(-1px) rotate(45deg);
+}
+.tier.top li::before { background: var(--green); }
+
+.join {
+  margin-top: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 18px;
+  padding: 44px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(47, 211, 217, 0.08), rgba(155, 123, 255, 0.06));
+}
+.join .pfp { width: 84px; height: 84px; }
+.join h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 7vw, 3.2rem); letter-spacing: -0.02em; margin: 0; line-height: 1; }
+.btn {
+  display: inline-block;
+  background: var(--discord);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 8px;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+.btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+.btn:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+.link-text { font-family: var(--font-mono); font-size: 0.85rem; color: var(--muted); margin: 0; overflow-wrap: anywhere; user-select: all; }
+footer { text-align: center; color: var(--muted); font-size: 0.85rem; margin-top: 28px; }
+</style>
+
+<div class="sky" aria-hidden="true"><div class="ribbon a"></div><div class="ribbon b"></div></div>
+
+<div class="wrap">
+  <header>
+    <svg class="pfp" viewBox="0 0 64 64" role="img" aria-label="AuroraFFA logo">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#5ef2b0"/>
+          <stop offset="0.55" stop-color="#2fd3d9"/>
+          <stop offset="1" stop-color="#9b7bff"/>
+        </linearGradient>
+      </defs>
+      <circle cx="32" cy="32" r="31" fill="#06121a" stroke="url(#g)" stroke-width="2"/>
+      <path d="M32 14 L47 48 H39.5 L36.8 41 H27.2 L24.5 48 H17 Z M32 26 L29.4 34.5 H34.6 Z" fill="url(#g)" fill-rule="evenodd"/>
+    </svg>
+    <div class="brand">Aurora<span>FFA</span></div>
+  </header>
+
+  <section class="hero">
+    <p class="eyebrow">Server ranks and prices</p>
+    <h1>Pick your <em>rank</em>.</h1>
+    <p class="lede">Everything each rank unlocks on AuroraFFA, from Media up to Aurora.</p>
+  </section>
+
+  <section class="tiers" aria-label="Ranks">
+    <article class="tier">
+      <h2>Media</h2>
+      <p class="price">More info in Discord</p>
+      <ul>
+        <li>Dash Sword</li>
+        <li>Web Axe</li>
+        <li>Custom Trims</li>
+        <li>Punch 2 Bow</li>
+      </ul>
+    </article>
+
+    <article class="tier plus">
+      <h2>Media +</h2>
+      <p class="price">More info in Discord</p>
+      <ul>
+        <li>Lightning Sword</li>
+        <li>Dash Sword</li>
+        <li>Web Axe</li>
+        <li>Dash Axe</li>
+        <li>3 Punch Bows</li>
+        <li>Custom Trims</li>
+      </ul>
+    </article>
+
+    <article class="tier top">
+      <h2>Aurora</h2>
+      <p class="price">€2.00</p>
+      <ul>
+        <li>Warden Sword</li>
+        <li>Lightning Sword</li>
+        <li>Dash Sword</li>
+        <li>Dash Axe</li>
+        <li>Web Axe</li>
+        <li>5 Punch Bows</li>
+        <li>Whatever Trims</li>
+      </ul>
+    </article>
+  </section>
+
+  <section class="join" aria-label="Join the Discord">
+    <svg class="pfp" viewBox="0 0 64 64" role="img" aria-label="AuroraFFA logo">
+      <defs>
+        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#5ef2b0"/>
+          <stop offset="0.55" stop-color="#2fd3d9"/>
+          <stop offset="1" stop-color="#9b7bff"/>
+        </linearGradient>
+      </defs>
+      <circle cx="32" cy="32" r="31" fill="#06121a" stroke="url(#g2)" stroke-width="2"/>
+      <path d="M32 14 L47 48 H39.5 L36.8 41 H27.2 L24.5 48 H17 Z M32 26 L29.4 34.5 H34.6 Z" fill="url(#g2)" fill-rule="evenodd"/>
+    </svg>
+    <h2>JOIN THE DISCORD!</h2>
+    <a class="btn" href="https://discord.gg/wYH3cZcR4" target="_blank" rel="noopener">Join AuroraFFA on Discord</a>
+    <p class="link-text">https://discord.gg/wYH3cZcR4</p>
+  </section>
+
+  <footer>AuroraFFA</footer>
+</div>
